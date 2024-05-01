@@ -1,4 +1,5 @@
 using TestHighGround;
+using FluentAssertions;
 
 namespace TestProject
 {
@@ -10,6 +11,8 @@ namespace TestProject
         {
             string[] numbers = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
             Assert.AreEqual("1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15", NumberProcessor.PrepareForPrint(numbers));
+            string[] numbers2 = { };
+            Assert.AreEqual("", NumberProcessor.PrepareForPrint(numbers2));
         }
         [TestMethod]
         public void TestMethodFirst()
@@ -19,7 +22,14 @@ namespace TestProject
             {
                 numbers[i] = NumberProcessor.ProcessNumberFirst(numbers[i]);
             }
+            numbers.Length.Should().Be(15);
             Assert.AreEqual("1, 2, fizz, 4, buzz, fizz, 7, 8, fizz, buzz, 11, fizz, 13, 14, fizz-buzz", NumberProcessor.PrepareForPrint(numbers));
+        }
+        [TestMethod]
+        public void TestMethodFirstException()
+        {
+            string numbers = "a";
+            Xunit.Assert.Throws<FormatException>(() =>  NumberProcessor.ProcessNumberFirst(numbers));
         }
         [TestMethod]
         public void TestMethodSecond()
